@@ -26,7 +26,7 @@ const navBar = () => {
   return (
     <header
       id="header"
-      className="fixed bg-white border-b border-gray-200 z-[9999] p-5 px-7 w-full h-20"
+      className="fixed bg-white border-b border-gray-200 z-[9999] p-5 px-7 w-full"
     >
       <div className="flex flex-wrap justify-between items-center w-full max-w-screen-md mx-auto">
         <Link to="/" className="flex-shrink-0">
@@ -47,7 +47,9 @@ const navBar = () => {
           <Icon icon={isMenuOpen ? `close` : `menu`} />
         </div>
         <ul
-          className={`flex flex-col w-full divide-y divide-gray-200 pt-5 md:p-0 md:divide-y-0 md:flex-row md:w-auto md:gap-x-5`}
+          className={`${
+            isMenuOpen ? `flex flex-col` : `hidden`
+          } w-full divide-y divide-gray-200 pt-5 md:p-0 md:divide-y-0 md:flex md:flex-row md:w-auto md:gap-x-5`}
         >
           {NavItems.map((item) => {
             return (
