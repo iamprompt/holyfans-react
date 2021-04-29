@@ -1,5 +1,6 @@
 import Layout from '@/layouts'
 import { HolyfansStorage } from '@/utils/firebase'
+import { Link } from 'react-router-dom'
 
 const HomePage = () => {
   return (
@@ -54,13 +55,13 @@ const HomePage = () => {
           <br />
           with the best fortune tellers
         </div>
-        <a
+        <Link
           id="explore-btn"
-          href="./explore.html"
+          to="/explore"
           className="w-auto px-5 py-3 text-lg text-white shadow-md bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl"
         >
           Explore
-        </a>
+        </Link>
       </div>
     </Layout>
   )
