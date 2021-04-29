@@ -4,10 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 // Components
 import Icon from '@/components/MaterialIcons'
 
-// Lockups
-import LockupWEBP from '@/assets/logo/lockup_color_horizontal.webp'
-import LockupSVG from '@/assets/logo/lockup_color_horizontal.svg'
-import LockupPNG from '@/assets/logo/lockup_color_horizontal.png'
+import { HolyfansStorage } from '@/utils/firebase'
 
 type INavItem = {
   title: string
@@ -15,12 +12,13 @@ type INavItem = {
   icon?: string
 }
 
-const navBar = () => {
+const NavBar = () => {
   const [isMenuOpen, toggleMenu] = useState<boolean>(false)
   const [NavItems, setNavItems] = useState<INavItem[]>([
     { title: 'Home', target: '/' },
     { title: 'Explore', target: '/explore' },
     { title: 'About us', target: '/aboutus' },
+    { title: 'Log in', target: '/auth/login' },
   ])
 
   return (
@@ -31,12 +29,34 @@ const navBar = () => {
       <div className="flex flex-wrap justify-between items-center w-full max-w-screen-md mx-auto">
         <Link to="/" className="flex-shrink-0">
           <picture>
-            <source srcSet={LockupWEBP} type="image/webp" />
-            <source srcSet={LockupSVG} type="image/svg+xml" />
+            <source
+              srcSet={HolyfansStorage.getUrl(
+                `logo/lockup_color_horizontal.avif`
+              )}
+              type="image/avif"
+            />
+            <source
+              srcSet={HolyfansStorage.getUrl(
+                `logo/lockup_color_horizontal.webp`
+              )}
+              type="image/webp"
+            />
+            <source
+              srcSet={HolyfansStorage.getUrl(
+                `logo/lockup_color_horizontal.svg`
+              )}
+              type="image/svg+xml"
+            />
+            <source
+              srcSet={HolyfansStorage.getUrl(
+                `logo/lockup_color_horizontal.png`
+              )}
+              type="image/png"
+            />
             <img
-              src={LockupPNG}
-              alt="HolyFans Logo"
+              src={HolyfansStorage.getUrl(`logo/lockup_color_horizontal.png`)}
               className="h-10 w-40 object-contain"
+              alt="HolyFans Logo"
             />
           </picture>
         </Link>
@@ -70,4 +90,4 @@ const navBar = () => {
   )
 }
 
-export default navBar
+export default NavBar
