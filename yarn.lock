@@ -296,10 +296,10 @@
   resolved "https://registry.yarnpkg.com/@tailwindcss/line-clamp/-/line-clamp-0.2.0.tgz#7f30f26ed3835d64d1eb5a9b0d60cf5291dd2a3b"
   integrity sha512-+jXSdRK3/9V/BCPCr+iNpMMhxWMMv62vn/AS2b3/ClmueGuhCijW3bUwO1IiHnE7uCaF74Sli8jUCv9djwvpLg==
 
-"@types/google.maps@^3.44.3":
-  version "3.44.3"
-  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.44.3.tgz#f0e1eb9f96576dd86ef06e885a04de4f1c7aa228"
-  integrity sha512-VsVQS3lvl/JFD1uGG0x3EVIbvmLQUEGuJNcd4sPXiPf6oHxUx2EJfQTqI+Liuhe9nLDl0e864NIq2K4WzfdcGQ==
+"@types/googlemaps@^3.43.3":
+  version "3.43.3"
+  resolved "https://registry.yarnpkg.com/@types/googlemaps/-/googlemaps-3.43.3.tgz#70cf962154a160fe78bcd69d6ccc296dd9175b1f"
+  integrity sha512-ZWNoz/O8MPEpiajvj7QiqCY8tTLFNqNZ/a+s+zTV58wFVNAvvqV4bdGfnsjTb5Cs4V6wEsLrX8XRhmnyYJ2Tdg==
 
 "@types/history@*":
   version "4.7.8"

@@ -42,7 +42,7 @@ const Authen = () => {
   const signIn = async (
     loginInfo: ILoginForm,
     redirect?: string
-  ): Promise<IUser> => {
+  ): Promise<void> => {
     setLoading(true)
     const {
       data: {
@@ -57,8 +57,6 @@ const Authen = () => {
     if (redirect) {
       navigate(redirect)
     }
-
-    return resUser
   }
 
   const signOut = async () => {
@@ -90,6 +88,6 @@ const Authen = () => {
 type IAuthContext = {
   user: IUser | null
   loadingAuth: boolean
-  signIn: (loginInfo: ILoginForm, redirect?: string) => Promise<IUser>
+  signIn: (loginInfo: ILoginForm, redirect?: string) => Promise<void>
   signOut: () => void
 }
