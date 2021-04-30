@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 // Components
 import Icon from '@/components/MaterialIcons'
 
 import { HolyfansStorage } from '@/utils/firebase'
+import { useAuth } from '@/utils/auth'
 
 type INavItem = {
   title: string
@@ -13,12 +14,13 @@ type INavItem = {
 }
 
 const NavBar = () => {
+  const { user, loadingAuth, signOut } = useAuth()
+  const { pathname } = useLocation()
   const [isMenuOpen, toggleMenu] = useState<boolean>(false)
   const [NavItems, setNavItems] = useState<INavItem[]>([
     { title: 'Home', target: '/' },
     { title: 'Explore', target: '/explore' },
     { title: 'About us', target: '/aboutus' },
-    { title: 'Log in', target: '/auth/login' },
   ])
 
   return (
@@ -77,13 +79,47 @@ const NavBar = () => {
                 key={item.title}
                 className="p-2 flex justify-center items-center md:p-0 md:block"
               >
-                <Link to={item.target} className="flex items-center gap-x-2">
+                <Link
+                  to={item.target}
+                  className={`flex items-center gap-x-2${
+                    pathname === item.target ? ` font-bold` : ``
+                  }`}
+                >
                   {item.icon && <Icon icon={item.icon} />}
                   {item.title}
                 </Link>
               </li>
             )
           })}
+          {user && !loadingAuth ? (
+            <li
+              key="logout"
+              className="p-2 flex justify-center items-center md:p-0 md:block"
+            >
+              <div
+                className="flex items-center gap-x-2 cursor-pointer"
+                onClick={signOut}
+              >
+                <Icon icon="logout" />
+                Logout
+              </div>
+            </li>
+          ) : (
+            <li
+              key="login"
+              className="p-2 flex justify-center items-center md:p-0 md:block"
+            >
+              <Link
+                to="/auth/login"
+                className={`flex items-center gap-x-2${
+                  pathname === `/auth/login` ? ` font-bold` : ``
+                }`}
+              >
+                <Icon icon="login" />
+                Login
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </header>

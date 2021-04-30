@@ -1,7 +1,13 @@
 import { AxiosResponse } from 'axios'
 
+// Firebase
+type FirestoreTimeStamp = {
+  _seconds: number
+  _nanoseconds: number
+}
+
 // Axios Call
-type IHolyFansApiResponse<T> = {
+export type IHolyFansApiResponse<T> = {
   status: 'success' | 'error'
   payload: T
 }
@@ -33,6 +39,14 @@ export type ITeller = {
   img: string
   nameTH: string
   bio: string
+  posts?: ITellerPost[]
+}
+
+export type ITellerPost = {
+  id: string
+  img?: string
+  content?: string
+  dateCreated: FirestoreTimeStamp
 }
 
 // Search Function
@@ -52,4 +66,39 @@ export type IAdvSearch = {
       value: string
     }[]
   }
+}
+
+// User
+export type IUser = {
+  id: string
+  role: 'admin' | 'creator' | 'user'
+  firstName: string
+  lastName: string
+  displayName: string
+  altFirstName?: string
+  altLastName?: string
+  altDisplayName?: string
+  email: string
+  password: string
+  dateCreated: FirestoreTimeStamp
+  dateModified: FirestoreTimeStamp
+}
+
+// Authentication
+export type ILoginForm = {
+  email: string
+  password: string
+}
+
+export type IRegisterForm = {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  repassword: string
+}
+
+export type ILoginAPIResponse = {
+  token: string
+  user: IUser
 }

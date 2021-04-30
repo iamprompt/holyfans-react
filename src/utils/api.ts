@@ -1,5 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { HolyFansAxiosResponse, ITeller } from '@/utils/types'
+import {
+  HolyFansAxiosResponse,
+  ILoginAPIResponse,
+  ILoginForm,
+  ITeller,
+} from '@/utils/types'
 import { ISearch } from '@/utils/types'
 
 const baseApiUrl: string = import.meta.env.PROD
@@ -13,6 +18,12 @@ const Config: AxiosRequestConfig = {
 const HolyFansInstance: AxiosInstance = axios.create(Config)
 
 export const HolyFansApi = {
+  auth: {
+    login: async (
+      loginInfo: ILoginForm
+    ): Promise<HolyFansAxiosResponse<ILoginAPIResponse>> =>
+      await HolyFansInstance.post(`/auth/login`, loginInfo),
+  },
   tellers: {
     getAll: async (): Promise<HolyFansAxiosResponse<ITeller[]>> =>
       await HolyFansInstance.get(`/tellers/all`),
