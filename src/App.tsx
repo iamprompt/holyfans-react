@@ -17,6 +17,10 @@ import AdminDashBoard from './pages/admin/dashboard'
 import UserMan from './pages/admin/users'
 import UserForm from './pages/admin/users/userForm'
 
+// Admin -> User
+import TellerMan from './pages/admin/tellers'
+import TellerForm from './pages/admin/tellers/tellerForm'
+
 const App = () => {
   return (
     <>
@@ -41,6 +45,11 @@ const App = () => {
             <Route path="" element={<UserMan />} />
             <Route path="add" element={<UserForm />} />
             <Route path="edit/:userId" element={<UserForm edit />} />
+          </Route>
+          <Route path="tellers/*">
+            <Route path="" element={<TellerMan />} />
+            <Route path="add" element={<TellerForm />} />
+            {/* <Route path="edit/:userId" element={<UserForm edit />} /> */}
           </Route>
         </Route>
       </Routes>

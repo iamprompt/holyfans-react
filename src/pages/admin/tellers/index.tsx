@@ -3,16 +3,36 @@ import Modal from '@/components/Modal'
 import Layout from '@/layouts'
 import { HolyFansApi } from '@/utils/api'
 import { useAuth } from '@/utils/auth'
-import { ActionModal, IUser } from '@/utils/types'
+import { ActionModal, IAdvSearch, ITeller, IUser } from '@/utils/types'
 import { Field, Form, Formik } from 'formik'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-const UserManPage = () => {
-  const { user, token } = useAuth()
+const advancedSearchModule: IAdvSearch = {
+  categories: {
+    name: 'Categories',
+    option: [
+      { name: 'Tarot', value: 'Tarot' },
+      { name: 'Thai Horo', value: 'Thai Horo' },
+      { name: 'Chinese Horo', value: 'Chinese Horo' },
+      { name: 'Zodiac Sign', value: 'Zodiac Sign' },
+      { name: 'Candle prediction', value: 'Candle prediction' },
+      { name: 'Feng Shui', value: 'Feng Shui' },
+    ],
+  },
+  area: {
+    name: 'Area',
+    option: [
+      { name: 'Bangkok', value: 'Bangkok' },
+      { name: 'Central', value: 'Central' },
+    ],
+  },
+}
 
-  const [results, setResults] = useState<IUser[]>([])
-  const [targetUser, setTargetUser] = useState<IUser | null>()
+const TellerManPage = () => {
+  const { token } = useAuth()
+
+  const [results, setResults] = useState<ITeller[]>([])
 
   const [isModalOpen, setModalOpen] = useState<boolean>(false)
   const [modalTitle, setModalTitle] = useState<string>('')
@@ -25,7 +45,7 @@ const UserManPage = () => {
         const {
           data: { payload },
           status,
-        } = await HolyFansApi.admin.users.getAll(token || '')
+        } = await HolyFansApi.tellers.getAll()
 
         if (status !== 200) return
         setResults(payload)
@@ -33,9 +53,9 @@ const UserManPage = () => {
     }
   }, [token])
 
-  const deleteModal = (u: IUser) => {
+  const deleteModal = (u: ITeller) => {
     setModalTitle('Are you sure to delete user?')
-    setModalDesc(`You are about to delete user with email "${u.email}"`)
+    setModalDesc(`You are about to delete user "${u.nameEN}"`)
     setModalAction([
       {
         title: 'Cancel',
@@ -49,7 +69,10 @@ const UserManPage = () => {
         variant: 'red',
         action: () => {
           setModalOpen(false)
-          deleteUser(u)
+          ;(async () => {
+            await HolyFansApi.admin.users.delete(u.id || '', token || '')
+          })()
+          window.location.reload()
         },
       },
     ])
@@ -57,65 +80,58 @@ const UserManPage = () => {
     setModalOpen(true)
   }
 
-  //* TODO : Check deleting function
-  const deleteUser = (u: IUser) => {
-    console.log(u)
-
-    // ;(async () => {
-    //   await HolyFansApi.admin.users.delete(targetUser?.id || '', token || '')
-    // })()
-    // window.location.reload()
-  }
-
   return (
     <Layout adminUi className="max-w-screen-md px-5 pt-28 pb-20">
       <div className="flex justify-between">
-        <div className="flex-shrink-0 text-4xl font-bold">Users</div>
+        <div className="flex-shrink-0 text-4xl font-bold">Tellers</div>
         <Link
-          to="/admin/users/add"
+          to="/admin/tellers/add"
           className="flex items-center justify-center py-1 px-3 rounded-lg gap-x-2 text-blue-900 bg-blue-100 hover:bg-blue-200 focus-visible:ring-blue-500"
         >
-          Create User <Icon icon="add" />
+          Create Teller <Icon icon="add" />
         </Link>
       </div>
 
       <Formik
-        initialValues={{ keyword: '', role: '', status: '' }}
-        onSubmit={(values, actions) => {
+        enableReinitialize
+        initialValues={{ search_keyword: '', categories: '', area: '' }}
+        onSubmit={async (values, actions) => {
           console.log({ values, actions })
+          const {
+            data: { payload },
+          } = await HolyFansApi.tellers.search(values)
+          setResults(payload)
         }}
       >
         <Form className="flex items-center gap-x-3 mt-5 flex-wrap gap-y-3">
           <div className="font-bold">Filter</div>
           <Field
-            id="keyword"
-            name="keyword"
+            id="search_keyword"
+            name="search_keyword"
             className="block appearance-none rounded-xl bg-gray-100 focus:bg-gray-50 border-0 focus:ring focus:ring-pink-400 p-2 flex-auto focus:outline-none"
-            placeHolder="Search Keyword"
+            placeholder="Search Keyword"
           />
 
-          <Field
-            component="select"
-            id="role"
-            name="role"
-            className="block appearance-none rounded-xl bg-gray-100 focus:bg-gray-50 border-0 focus:ring focus:ring-pink-400 flex-auto"
-          >
-            <option value="">-- Role --</option>
-            <option value="admin">Admin</option>
-            <option value="user">User</option>
-          </Field>
-
-          <Field
-            component="select"
-            id="status"
-            name="status"
-            className="block appearance-none rounded-xl bg-gray-100 focus:bg-gray-50 border-0 focus:ring focus:ring-pink-400 flex-auto"
-          >
-            <option value="">-- Status --</option>
-            <option value="admin">Active</option>
-            <option value="user">Non Active</option>
-          </Field>
-
+          {Object.keys(advancedSearchModule).map((k) => {
+            const data = advancedSearchModule[k]
+            return (
+              <Field
+                component="select"
+                id={k.toLowerCase()}
+                name={k.toLowerCase()}
+                className="block appearance-none rounded-xl bg-gray-100 focus:bg-gray-50 border-0 focus:ring focus:ring-pink-400 flex-auto"
+              >
+                <option value="">-- {data.name} --</option>
+                {data.option.map((o: any) => {
+                  return (
+                    <option value={o.value} key={`${data.name}-${o.name}`}>
+                      {o.name}
+                    </option>
+                  )
+                })}
+              </Field>
+            )
+          })}
           <button
             type="submit"
             className="bg-green-400 p-2 rounded-xl flex-auto"
@@ -134,10 +150,10 @@ const UserManPage = () => {
                     Name
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-2/12">
-                    Status
+                    Category
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-2/12">
-                    Role
+                    Area
                   </th>
                   <th className="relative px-6 py-3 w-1/12">
                     <span className="sr-only">Edit</span>
@@ -149,24 +165,43 @@ const UserManPage = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {results.map((res) => (
-                  <tr key={res.email}>
+                  <tr key={res.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {`${res.firstName} ${res.lastName}`}
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-10 w-10">
+                          <img
+                            className="h-10 w-10 rounded-full"
+                            src={res.img}
+                            alt={res.nameEN}
+                          />
+                        </div>
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-900">
+                            {res.nameEN}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {res.nameTH}
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-sm text-gray-500">{res.email}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        Active
-                      </span>
+                      <div className="flex gap-2 flex-wrap">
+                        {res.category.map((c) => (
+                          <span
+                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800`}
+                          >
+                            {c}
+                          </span>
+                        ))}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">
-                      {res.role}
+                      {res.region}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <Link
-                        to={`/admin/users/edit/${res.id}`}
+                        to={`/admin/tellers/edit/${res.id}`}
                         className="text-indigo-600 hover:text-indigo-900"
                       >
                         Edit
@@ -197,4 +232,4 @@ const UserManPage = () => {
   )
 }
 
-export default UserManPage
+export default TellerManPage

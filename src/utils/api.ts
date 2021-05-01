@@ -90,8 +90,8 @@ export const HolyFansApi = {
       tellerId: string
     ): Promise<HolyFansAxiosResponse<ITeller>> =>
       await HolyFansInstance.get(`/tellers`, { params: { tId: tellerId } }),
-    searchTellers: async (
-      searchParams: ISearch
+    search: async (
+      searchParams: Partial<ISearch>
     ): Promise<HolyFansAxiosResponse<ITeller[]>> =>
       await HolyFansInstance.get(`/tellers/search`, {
         params: searchParams,

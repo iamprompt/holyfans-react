@@ -80,6 +80,7 @@ export type IUser = {
   altDisplayName?: string
   email: string
   password: string
+  isActive: boolean
   dateCreated: FirestoreTimeStamp
   dateModified: FirestoreTimeStamp
 }

@@ -102,9 +102,7 @@ const ExplorePage = () => {
     }
 
     ;(async () => {
-      const { data, status } = await HolyFansApi.tellers.searchTellers(
-        searchRequest
-      )
+      const { data, status } = await HolyFansApi.tellers.search(searchRequest)
       if (status === 200) {
         setResult(data.payload)
         setNotFoundStatus(data.payload.length === 0)

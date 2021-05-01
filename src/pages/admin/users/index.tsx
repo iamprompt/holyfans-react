@@ -154,8 +154,14 @@ const UserManPage = () => {
                       <div className="text-sm text-gray-500">{res.email}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        Active
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          res.isActive
+                            ? `bg-green-100 text-green-800`
+                            : `bg-red-100 text-red-800`
+                        }`}
+                      >
+                        {res.isActive ? `Active` : `Inactive`}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">
