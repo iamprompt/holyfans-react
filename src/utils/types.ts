@@ -71,7 +71,7 @@ export type IAdvSearch = {
 // User
 export type IUser = {
   id: string
-  role: 'admin' | 'creator' | 'user'
+  role: 'admin' | 'user'
   firstName: string
   lastName: string
   displayName: string
@@ -101,4 +101,19 @@ export type IRegisterForm = {
 export type ILoginAPIResponse = {
   token: string
   user: IUser
+}
+
+// Modal
+export type ActionModal = {
+  title: string
+  variant?: 'blue' | 'red'
+  action: () => void
+}
+
+export type UserDataForm = {
+  role: 'admin' | 'user'
+  firstName: string
+  lastName: string
+  email: string
+  password: string
 }

@@ -79,6 +79,7 @@ const Authen = () => {
 
   return {
     user,
+    token,
     loadingAuth,
     signIn,
     signOut,
@@ -87,6 +88,7 @@ const Authen = () => {
 
 type IAuthContext = {
   user: IUser | null
+  token: string | null
   loadingAuth: boolean
   signIn: (loginInfo: ILoginForm, redirect?: string) => Promise<void>
   signOut: () => void
