@@ -121,7 +121,7 @@ const ExplorePage = () => {
   }, [searchRequest])
 
   return (
-    <Layout className="max-w-screen-sm pb-20">
+    <Layout className="max-w-screen-sm pb-20 px-5">
       <h1 className="text-center m-10 font-bold text-4xl">Explore the magic</h1>
       <SearchInput value={searchRequest} onSubmit={handleSubmit} />
       {result.length !== 0 ? (

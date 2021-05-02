@@ -33,25 +33,25 @@ const AdminDashBoard = () => {
   }, [])
 
   return (
-    <Layout adminUi className="max-w-screen-sm pt-28">
+    <Layout adminUi className="max-w-screen-sm pt-28 pb-20 px-5">
       <div className="text-4xl font-bold">Admin Dashboard</div>
-      <div className="mt-5 grid grid-cols-4 border border-pink-400 rounded-xl">
-        <div className="col-span-1 p-5 font-bold text-xl border-r border-pink-400">
+      <div className="mt-5 grid grid-cols-3 sm:grid-cols-4 border border-pink-400 rounded-xl">
+        <div className="col-span-3 sm:col-span-1 p-5 font-bold text-xl text-center sm:text-left border-b sm:border-r sm:border-b-0 border-pink-400">
           Welcome to <span className="text-pink-400">HolyFans</span>
         </div>
-        <div className="col-span-1 flex items-center justify-center gap-x-3">
+        <div className="col-span-1 flex items-center justify-center gap-x-3 p-2">
           Users
           <div className="flex items-center justify-center bg-gray-200 h-10 w-16 rounded-xl border-2 border-pink-400">
             {users.length}
           </div>
         </div>
-        <div className="col-span-1 flex items-center justify-center gap-x-3">
+        <div className="col-span-1 flex items-center justify-center gap-x-3 p-2">
           Tellers
           <div className="flex items-center justify-center bg-gray-200 h-10 w-16 rounded-xl border-2 border-pink-400">
             {tellers.length}
           </div>
         </div>
-        <div className="col-span-1 flex items-center justify-center gap-x-3">
+        <div className="col-span-1 flex items-center justify-center gap-x-3 p-2">
           Posts
           <div className="flex items-center justify-center bg-gray-200 h-10 w-16 rounded-xl border-2 border-pink-400">
             {posts.length}

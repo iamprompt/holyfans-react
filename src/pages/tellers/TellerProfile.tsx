@@ -10,10 +10,6 @@ import { storage } from '@/utils/firebase'
 
 const GAPI_KEY = (import.meta.env.VITE_GAPI_KEY as string) || ''
 
-type ParamsType = {
-  tellerId: string
-}
-
 const TellerProfile = () => {
   const { tellerId } = useParams()
   const [profileData, setProfile] = useState<ITeller>()
@@ -73,7 +69,7 @@ const TellerProfile = () => {
   }, [])
 
   return (
-    <Layout className="max-w-screen-sm divide-y">
+    <Layout className="max-w-screen-sm divide-y px-5">
       <div className="py-5">
         <div className="z-10 w-40 h-40 overflow-hidden bg-gray-300 rounded-full my-5 mx-auto">
           <img
