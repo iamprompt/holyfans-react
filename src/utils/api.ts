@@ -3,8 +3,12 @@ import {
   HolyFansAxiosResponse,
   ILoginAPIResponse,
   ILoginForm,
+  IRegisterForm,
   ITeller,
+  ITellerPost,
   IUser,
+  TellerDataForm,
+  TellerPostForm,
   UserDataForm,
 } from '@/utils/types'
 import { ISearch } from '@/utils/types'
@@ -25,6 +29,10 @@ export const HolyFansApi = {
       loginInfo: ILoginForm
     ): Promise<HolyFansAxiosResponse<ILoginAPIResponse>> =>
       await HolyFansInstance.post(`/auth/login`, loginInfo),
+    register: async (
+      registerInfo: IRegisterForm
+    ): Promise<HolyFansAxiosResponse<ILoginAPIResponse>> =>
+      await HolyFansInstance.post(`/auth/register`, registerInfo),
   },
   admin: {
     users: {
@@ -90,6 +98,52 @@ export const HolyFansApi = {
         await HolyFansInstance.delete(`/tellers`, {
           headers: { Authorization: `Bearer ${adminToken}` },
           params: { tId: tellerId },
+        }),
+      create: async (
+        data: TellerDataForm,
+        adminToken: string
+      ): Promise<HolyFansAxiosResponse<any>> =>
+        await HolyFansInstance.post(`/tellers`, data, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        }),
+      update: async (
+        tellerId: string,
+        data: TellerDataForm,
+        adminToken: string
+      ): Promise<HolyFansAxiosResponse<any>> =>
+        await HolyFansInstance.put(
+          `/tellers`,
+          { ...data, id: tellerId },
+          {
+            headers: { Authorization: `Bearer ${adminToken}` },
+          }
+        ),
+    },
+    posts: {
+      getAll: async (
+        adminToken: string
+      ): Promise<HolyFansAxiosResponse<ITellerPost[]>> =>
+        await HolyFansInstance.get(`/posts/all`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        }),
+      getById: async (
+        tId: string,
+        pId: string,
+        adminToken: string
+      ): Promise<HolyFansAxiosResponse<ITellerPost>> =>
+        await HolyFansInstance.get(`/posts`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+          params: { tId, pId },
+        }),
+      create: async (data: TellerPostForm, adminToken: string) =>
+        await HolyFansInstance.post(`/posts`, data, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        }),
+      update: () => {},
+      delete: async (tId: string, pId: string, adminToken: string) =>
+        await HolyFansInstance.delete(`/posts`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+          params: { tId, pId },
         }),
     },
   },

@@ -56,10 +56,7 @@ const TellerProfile = () => {
     <Layout className="max-w-screen-sm divide-y">
       <div className="py-5">
         <div className="z-10 w-40 h-40 overflow-hidden bg-gray-300 rounded-full my-5 mx-auto">
-          <img
-            id="profile-img"
-            src="https://firebasestorage.googleapis.com/v0/b/mu-nakama.appspot.com/o/teller%2Fprofile%2Fpimfah.jpg?alt=media"
-          />
+          <img id="profile-img" src={profileData?.img} />
         </div>
         <h2 className="text-4xl font-bold text-center">
           {profileData?.nameEN}

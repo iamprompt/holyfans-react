@@ -104,12 +104,12 @@ const TellerFormPage = ({ edit }: Props) => {
           title: 'Update Teller',
           action: async (values, actions) => {
             console.log(values)
-            // await HolyFansApi.admin.users.update(
-            //   userId || '',
-            //   values,
-            //   token || ''
-            // )
-            // navigate(`/admin/users`)
+            await HolyFansApi.admin.tellers.update(
+              tellerId || '',
+              values,
+              token || ''
+            )
+            navigate(`/admin/tellers`)
           },
         })
       }
@@ -119,8 +119,8 @@ const TellerFormPage = ({ edit }: Props) => {
         title: 'Create Teller',
         action: async (values, actions) => {
           console.log(values)
-          // await HolyFansApi.admin.users.create(values, token || '')
-          // navigate(`/admin/users`)
+          await HolyFansApi.admin.tellers.create(values, token || '')
+          navigate(`/admin/teller`)
         },
       })
     }
@@ -198,7 +198,7 @@ const TellerFormPage = ({ edit }: Props) => {
                   ) : (
                     <label
                       htmlFor="uploadImg"
-                      className="absolute h-full w-full flex justify-center items-center bg-gray-100 rounded-xl font-bold"
+                      className="absolute h-full w-full flex justify-center items-center bg-gray-100 rounded-xl font-bold cursor-pointer"
                     >
                       No image selected
                     </label>

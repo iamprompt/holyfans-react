@@ -23,9 +23,14 @@ const PostCard = ({ profile, post }: Props) => {
         </div>
       </div>
       <div>{post.content}</div>
-      <div className="aspect-w-3 aspect-h-2 mt-3">
-        <img src={post.img} className="h-full w-full object-cover rounded-xl" />
-      </div>
+      {post.img && (
+        <div className="aspect-w-3 aspect-h-2 mt-3">
+          <img
+            src={post.img}
+            className="h-full w-full object-cover rounded-xl"
+          />
+        </div>
+      )}
     </div>
   )
 }

@@ -1,15 +1,13 @@
 import Layout from '@/layouts'
 import LoginInput from '@/components/auth/LoginForm'
 import { ILoginForm } from '@/utils/types'
-import { HolyFansApi } from '@/utils/api'
 import { useAuth } from '@/utils/auth'
 
 const LoginPage = () => {
   const { user, signIn } = useAuth()
 
   const handleSignIn = async (loginInfo: ILoginForm) => {
-    const res = await signIn(loginInfo)
-    console.log(user)
+    await signIn(loginInfo, `/`)
   }
 
   return (

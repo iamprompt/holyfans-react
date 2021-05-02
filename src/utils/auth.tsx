@@ -7,7 +7,7 @@ import {
 } from 'react'
 import { useNavigate } from 'react-router'
 import { HolyFansApi } from './api'
-import { ILoginForm, IUser } from './types'
+import { ILoginForm, IRegisterForm, IUser } from './types'
 
 //@ts-expect-error
 const authContext = createContext<IAuthContext>(null)
@@ -59,6 +59,26 @@ const Authen = () => {
     }
   }
 
+  const register = async (
+    registerInfo: IRegisterForm,
+    redirect?: string
+  ): Promise<void> => {
+    setLoading(true)
+    const {
+      data: {
+        payload: { user: resUser, token: resToken },
+      },
+    } = await HolyFansApi.auth.register(registerInfo)
+
+    handleUser(resUser, resToken)
+
+    setLoading(false)
+
+    if (redirect) {
+      navigate(redirect)
+    }
+  }
+
   const signOut = async () => {
     handleUser(null, null)
     navigate(`/`)
@@ -83,6 +103,7 @@ const Authen = () => {
     loadingAuth,
     signIn,
     signOut,
+    register,
   }
 }
 
@@ -91,5 +112,6 @@ type IAuthContext = {
   token: string | null
   loadingAuth: boolean
   signIn: (loginInfo: ILoginForm, redirect?: string) => Promise<void>
+  register: (registerInfo: IRegisterForm, redirect?: string) => Promise<void>
   signOut: () => void
 }

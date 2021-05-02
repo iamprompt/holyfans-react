@@ -13,13 +13,17 @@ import Register from './pages/auth/Register'
 // Admin
 import AdminDashBoard from './pages/admin/dashboard'
 
-// Admin -> User
+// Admin -> Users
 import UserMan from './pages/admin/users'
 import UserForm from './pages/admin/users/userForm'
 
-// Admin -> User
+// Admin -> Tellers
 import TellerMan from './pages/admin/tellers'
 import TellerForm from './pages/admin/tellers/tellerForm'
+
+// Admin -> Posts
+import PostMan from './pages/admin/posts'
+import PostForm from './pages/admin/posts/postForm'
 
 const App = () => {
   return (
@@ -50,6 +54,11 @@ const App = () => {
             <Route path="" element={<TellerMan />} />
             <Route path="add" element={<TellerForm />} />
             <Route path="edit/:tellerId" element={<TellerForm edit />} />
+          </Route>
+          <Route path="posts/*">
+            <Route path="" element={<PostMan />} />
+            <Route path="add" element={<PostForm />} />
+            <Route path="edit/:tellerId/:postId" element={<PostForm edit />} />
           </Route>
         </Route>
       </Routes>

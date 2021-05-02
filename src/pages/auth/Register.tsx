@@ -1,10 +1,13 @@
 import RegisterInput from '@/components/auth/RegisterForm'
 import Layout from '@/layouts'
+import { useAuth } from '@/utils/auth'
 import { IRegisterForm } from '@/utils/types'
 
 const RegisterPage = () => {
-  const handleRegister = (val: IRegisterForm) => {
-    console.log(val)
+  const { user, register } = useAuth()
+
+  const handleRegister = async (val: IRegisterForm) => {
+    await register(val, `/`)
   }
 
   return (

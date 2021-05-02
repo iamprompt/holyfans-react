@@ -47,6 +47,12 @@ export type ITellerPost = {
   img?: string
   content?: string
   dateCreated: FirestoreTimeStamp
+  dateModified?: FirestoreTimeStamp
+  author?: {
+    id: string
+    img: string
+    nameEN: string
+  }
 }
 
 // Search Function
@@ -131,4 +137,10 @@ export type TellerDataForm = {
     _latitude: number
     _longitude: number
   }
+}
+
+export type TellerPostForm = {
+  img?: string
+  content?: string
+  tellerId: string
 }
