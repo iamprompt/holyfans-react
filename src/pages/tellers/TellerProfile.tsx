@@ -26,6 +26,21 @@ const TellerProfile = () => {
           ? data.payload.img
           : await storage.ref(data.payload.img).getDownloadURL()
 
+        if (data.payload.posts) {
+          data.payload.posts = await Promise.all(
+            data.payload.posts?.map(async (p) => {
+              return {
+                ...p,
+                img: p.img
+                  ? p.img.includes('https')
+                    ? p.img
+                    : await storage.ref(p.img).getDownloadURL()
+                  : '',
+              }
+            })
+          )
+        }
+
         setProfile(data.payload)
         setLocation({
           lat: data.payload?.address._latitude || 0,
@@ -61,7 +76,11 @@ const TellerProfile = () => {
     <Layout className="max-w-screen-sm divide-y">
       <div className="py-5">
         <div className="z-10 w-40 h-40 overflow-hidden bg-gray-300 rounded-full my-5 mx-auto">
-          <img id="profile-img" src={profileData?.img} />
+          <img
+            id="profile-img"
+            src={profileData?.img}
+            className="object-cover h-full w-full"
+          />
         </div>
         <h2 className="text-4xl font-bold text-center">
           {profileData?.nameEN}

@@ -4,6 +4,7 @@ import Layout from '@/layouts'
 import { HolyFansApi } from '@/utils/api'
 import { useAuth } from '@/utils/auth'
 import { dayjs } from '@/utils/config'
+import { storage } from '@/utils/firebase'
 import {
   ActionModal,
   IAdvSearch,
@@ -34,7 +35,20 @@ const PostManPage = () => {
         } = await HolyFansApi.admin.posts.getAll(token)
 
         if (status !== 200) return
-        setResults(payload)
+        const d = (await Promise.all(
+          payload.map(async (p) => {
+            return {
+              ...p,
+              author: {
+                ...p.author,
+                img: p.author?.img.includes('https')
+                  ? p.author?.img
+                  : await storage.ref(p.author?.img).getDownloadURL(),
+              },
+            }
+          })
+        )) as ITellerPost[]
+        setResults(d)
       })()
     }
   }, [token])
@@ -142,7 +156,7 @@ const PostManPage = () => {
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
                           <img
-                            className="h-10 w-10 rounded-full"
+                            className="h-10 w-10 rounded-full object-cover"
                             src={res.author?.img}
                             alt={res.author?.nameEN}
                           />
