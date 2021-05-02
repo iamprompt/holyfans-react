@@ -62,7 +62,7 @@ const Modal = ({ open: [isOpen, setOpen], title, desc, action }: Props) => {
                   {title}
                 </Dialog.Title>
 
-                <Dialog.Description>
+                <div>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">{desc}</p>
                   </div>
@@ -81,6 +81,7 @@ const Modal = ({ open: [isOpen, setOpen], title, desc, action }: Props) => {
                             type="button"
                             className={`inline-flex justify-center px-4 py-2 text-sm font-medium border border-transparent rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${buttonColor}`}
                             onClick={a.action}
+                            key={a.title}
                           >
                             {a.title}
                           </button>
@@ -88,7 +89,7 @@ const Modal = ({ open: [isOpen, setOpen], title, desc, action }: Props) => {
                       })}
                     </div>
                   )}
-                </Dialog.Description>
+                </div>
               </div>
             </Transition.Child>
           </div>

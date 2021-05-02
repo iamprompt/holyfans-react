@@ -3,12 +3,10 @@ import Layout from '@/layouts'
 import { HolyFansApi } from '@/utils/api'
 import { useAuth } from '@/utils/auth'
 import { storage } from '@/utils/firebase'
-import { ITeller, TellerDataForm, TellerPostForm } from '@/utils/types'
+import { ITeller, TellerPostForm } from '@/utils/types'
 import { Field, Form, Formik, FormikHelpers } from 'formik'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-
-const GAPI_KEY = (import.meta.env.VITE_GAPI_KEY as string) || ''
 
 type Props = {
   edit?: boolean
@@ -71,24 +69,25 @@ const PostFormPage = ({ edit }: Props) => {
               content,
               tellerId: author?.id || '',
             })
-            if (img?.includes('https')) {
-              setImgUrl(img as string)
-            } else {
-              setImgUrl(await storage.ref(img).getDownloadURL())
+            if (img) {
+              if (img.includes('https')) {
+                setImgUrl(img as string)
+              } else {
+                setImgUrl(await storage.ref(img).getDownloadURL())
+              }
             }
           }
         })()
 
         setActionButton({
-          title: 'Update Teller',
+          title: 'Update Post',
           action: async (values, actions) => {
             console.log(values)
-            // await HolyFansApi.admin.users.update(
-            //   userId || '',
-            //   values,
-            //   token || ''
-            // )
-            // navigate(`/admin/users`)
+            await HolyFansApi.admin.posts.update(
+              { ...values, id: postId },
+              token || ''
+            )
+            navigate(`/admin/posts`)
           },
         })
       }

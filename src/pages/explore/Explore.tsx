@@ -1,6 +1,6 @@
 import Layout from '@/layouts'
 import SearchInput from '@/components/explore/SearchBar'
-import { HolyfansStorage } from '@/utils/firebase'
+import { HolyfansStorage, storage } from '@/utils/firebase'
 import { useEffect, useRef, useState } from 'react'
 import { ITeller, ISearch } from '@/utils/types'
 import ResultCard from '@/components/explore/ResultCard'
@@ -104,7 +104,17 @@ const ExplorePage = () => {
     ;(async () => {
       const { data, status } = await HolyFansApi.tellers.search(searchRequest)
       if (status === 200) {
-        setResult(data.payload)
+        const d = await Promise.all(
+          data.payload.map(async (d) => {
+            return {
+              ...d,
+              img: d.img.includes('https')
+                ? d.img
+                : await storage.ref(d.img).getDownloadURL(),
+            }
+          })
+        )
+        setResult(d)
         setNotFoundStatus(data.payload.length === 0)
       }
     })()

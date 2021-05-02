@@ -64,7 +64,7 @@ const AdminDashBoard = () => {
           <table className="min-w-full">
             <tbody>
               {posts.slice(0, 5).map((p) => (
-                <tr>
+                <tr key={p.id}>
                   <td className="py-2 w-1/3">
                     {dayjs
                       .unix(p.dateCreated._seconds)

@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api'
 import { dayjs } from '@/utils/config'
 import PostCard from '@/components/tellers/PostCard'
+import { storage } from '@/utils/firebase'
 
 const GAPI_KEY = (import.meta.env.VITE_GAPI_KEY as string) || ''
 
@@ -21,6 +22,10 @@ const TellerProfile = () => {
     ;(async () => {
       const { data, status } = await HolyFansApi.tellers.getById(tellerId)
       if (status === 200) {
+        data.payload.img = data.payload.img.includes('https')
+          ? data.payload.img
+          : await storage.ref(data.payload.img).getDownloadURL()
+
         setProfile(data.payload)
         setLocation({
           lat: data.payload?.address._latitude || 0,

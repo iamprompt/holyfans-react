@@ -92,11 +92,16 @@ const TellerFormPage = ({ edit }: Props) => {
               category,
               address,
             })
-            setImgUrl(img)
             setInitialCenter({
               lat: address._latitude,
               lng: address._longitude,
             })
+
+            if (img?.includes('https')) {
+              setImgUrl(img as string)
+            } else {
+              setImgUrl(await storage.ref(img).getDownloadURL())
+            }
           }
         })()
 
@@ -120,7 +125,7 @@ const TellerFormPage = ({ edit }: Props) => {
         action: async (values, actions) => {
           console.log(values)
           await HolyFansApi.admin.tellers.create(values, token || '')
-          navigate(`/admin/teller`)
+          navigate(`/admin/tellers`)
         },
       })
     }
@@ -161,10 +166,12 @@ const TellerFormPage = ({ edit }: Props) => {
     )
   }
 
-  const { isLoaded } = useJsApiLoader({
+  const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: GAPI_KEY,
   })
+
+  console.log(loadError)
 
   const [map, setMap] = useState<google.maps.Map<Element> | null>(null)
   const [initialCenter, setInitialCenter] = useState<google.maps.LatLngLiteral>(
@@ -269,6 +276,7 @@ const TellerFormPage = ({ edit }: Props) => {
                   name="region"
                   className="block appearance-none rounded-xl bg-gray-100 focus:bg-gray-50 border-0 focus:ring focus:ring-pink-400 p-2 flex-auto focus:outline-none"
                 >
+                  <option value="">-- Area --</option>
                   <option value="Bangkok">Bangkok</option>
                   <option value="Central">Central</option>
                 </Field>

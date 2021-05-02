@@ -3,6 +3,7 @@ import Modal from '@/components/Modal'
 import Layout from '@/layouts'
 import { HolyFansApi } from '@/utils/api'
 import { useAuth } from '@/utils/auth'
+import { storage } from '@/utils/firebase'
 import { ActionModal, IAdvSearch, ITeller, IUser } from '@/utils/types'
 import { Field, Form, Formik } from 'formik'
 import { useEffect, useState } from 'react'
@@ -48,7 +49,17 @@ const TellerManPage = () => {
         } = await HolyFansApi.tellers.getAll()
 
         if (status !== 200) return
-        setResults(payload)
+        const d = await Promise.all(
+          payload.map(async (p) => {
+            return {
+              ...p,
+              img: p.img.includes('https')
+                ? p.img
+                : await storage.ref(p.img).getDownloadURL(),
+            }
+          })
+        )
+        setResults(d)
       })()
     }
   }, [token])
@@ -165,60 +176,62 @@ const TellerManPage = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {results.map((res) => (
-                  <tr key={res.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10">
-                          <img
-                            className="h-10 w-10 rounded-full"
-                            src={res.img}
-                            alt={res.nameEN}
-                          />
-                        </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">
-                            {res.nameEN}
+                {results.map((res) => {
+                  return (
+                    <tr key={res.id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 h-10 w-10">
+                            <img
+                              className="h-10 w-10 rounded-full"
+                              src={res.img}
+                              alt={res.nameEN}
+                            />
                           </div>
-                          <div className="text-sm text-gray-500">
-                            {res.nameTH}
+                          <div className="ml-4">
+                            <div className="text-sm font-medium text-gray-900">
+                              {res.nameEN}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {res.nameTH}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex gap-2 flex-wrap">
-                        {res.category.map((c) => (
-                          <span
-                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800`}
-                            key={`${res.id}-${c}`}
-                          >
-                            {c}
-                          </span>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">
-                      {res.region}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Link
-                        to={`/admin/tellers/edit/${res.id}`}
-                        className="text-indigo-600 hover:text-indigo-900"
-                      >
-                        Edit
-                      </Link>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div
-                        className="text-indigo-600 hover:text-indigo-900 cursor-pointer"
-                        onClick={() => deleteModal(res)}
-                      >
-                        Delete
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex gap-2 flex-wrap">
+                          {res.category.map((c) => (
+                            <span
+                              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800`}
+                              key={`${res.id}-${c}`}
+                            >
+                              {c}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">
+                        {res.region}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <Link
+                          to={`/admin/tellers/edit/${res.id}`}
+                          className="text-indigo-600 hover:text-indigo-900"
+                        >
+                          Edit
+                        </Link>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div
+                          className="text-indigo-600 hover:text-indigo-900 cursor-pointer"
+                          onClick={() => deleteModal(res)}
+                        >
+                          Delete
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>

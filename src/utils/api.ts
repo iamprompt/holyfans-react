@@ -139,7 +139,13 @@ export const HolyFansApi = {
         await HolyFansInstance.post(`/posts`, data, {
           headers: { Authorization: `Bearer ${adminToken}` },
         }),
-      update: () => {},
+      update: async (
+        data: TellerPostForm & { id: string },
+        adminToken: string
+      ) =>
+        await HolyFansInstance.put(`/posts`, data, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        }),
       delete: async (tId: string, pId: string, adminToken: string) =>
         await HolyFansInstance.delete(`/posts`, {
           headers: { Authorization: `Bearer ${adminToken}` },
