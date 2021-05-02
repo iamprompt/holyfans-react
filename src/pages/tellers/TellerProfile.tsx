@@ -19,7 +19,7 @@ const TellerProfile = () => {
 
   useEffect(() => {
     ;(async () => {
-      const { data, status } = await HolyFansApi.tellers.getTellerById(tellerId)
+      const { data, status } = await HolyFansApi.tellers.getById(tellerId)
       if (status === 200) {
         setProfile(data.payload)
         setLocation({

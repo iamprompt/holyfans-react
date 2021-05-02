@@ -54,8 +54,8 @@ const TellerManPage = () => {
   }, [token])
 
   const deleteModal = (u: ITeller) => {
-    setModalTitle('Are you sure to delete user?')
-    setModalDesc(`You are about to delete user "${u.nameEN}"`)
+    setModalTitle('Are you sure to delete teller?')
+    setModalDesc(`You are about to delete teller "${u.nameEN}"`)
     setModalAction([
       {
         title: 'Cancel',
@@ -65,14 +65,14 @@ const TellerManPage = () => {
         },
       },
       {
-        title: 'Delete User',
+        title: 'Delete Teller',
         variant: 'red',
         action: () => {
           setModalOpen(false)
           ;(async () => {
-            await HolyFansApi.admin.users.delete(u.id || '', token || '')
+            await HolyFansApi.admin.tellers.delete(u.id || '', token || '')
+            window.location.reload()
           })()
-          window.location.reload()
         },
       },
     ])

@@ -76,17 +76,27 @@ export const HolyFansApi = {
       delete: async (
         userId: string,
         adminToken: string
-      ): Promise<HolyFansAxiosResponse<IUser[]>> =>
+      ): Promise<HolyFansAxiosResponse<any>> =>
         await HolyFansInstance.delete(`/users`, {
           headers: { Authorization: `Bearer ${adminToken}` },
           params: { uId: userId },
+        }),
+    },
+    tellers: {
+      delete: async (
+        tellerId: string,
+        adminToken: string
+      ): Promise<HolyFansAxiosResponse<any>> =>
+        await HolyFansInstance.delete(`/tellers`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+          params: { tId: tellerId },
         }),
     },
   },
   tellers: {
     getAll: async (): Promise<HolyFansAxiosResponse<ITeller[]>> =>
       await HolyFansInstance.get(`/tellers/all`),
-    getTellerById: async (
+    getById: async (
       tellerId: string
     ): Promise<HolyFansAxiosResponse<ITeller>> =>
       await HolyFansInstance.get(`/tellers`, { params: { tId: tellerId } }),

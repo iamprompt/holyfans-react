@@ -50,8 +50,8 @@ const UserManPage = () => {
           setModalOpen(false)
           ;(async () => {
             await HolyFansApi.admin.users.delete(u.id || '', token || '')
+            window.location.reload()
           })()
-          window.location.reload()
         },
       },
     ])

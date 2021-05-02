@@ -49,7 +49,7 @@ const App = () => {
           <Route path="tellers/*">
             <Route path="" element={<TellerMan />} />
             <Route path="add" element={<TellerForm />} />
-            {/* <Route path="edit/:userId" element={<UserForm edit />} /> */}
+            <Route path="edit/:tellerId" element={<TellerForm edit />} />
           </Route>
         </Route>
       </Routes>

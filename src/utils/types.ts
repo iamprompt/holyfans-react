@@ -118,3 +118,17 @@ export type UserDataForm = {
   email: string
   password: string
 }
+
+export type TellerDataForm = {
+  img: string
+  nameTH: string
+  nameEN: string
+  region: string
+  subPrice: number
+  bio: string
+  category: string[]
+  address: {
+    _latitude: number
+    _longitude: number
+  }
+}
