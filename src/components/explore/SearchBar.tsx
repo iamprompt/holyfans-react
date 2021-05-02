@@ -63,7 +63,7 @@ const SearchBar = ({
         <div className="relative">
           <label
             htmlFor="search_keyword"
-            className="flex h-full absolute top-0 left-3 items-center font-bold z-10"
+            className="flex h-full absolute top-0 left-3 items-center font-bold z-[5]"
           >
             Find
           </label>
@@ -80,7 +80,7 @@ const SearchBar = ({
           />
           <button
             type="submit"
-            className="flex h-full absolute top-0 right-3 items-center z-10 material-icons focus:outline-none"
+            className="flex h-full absolute top-0 right-3 items-center z-[5] material-icons focus:outline-none"
           >
             search
           </button>

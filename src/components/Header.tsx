@@ -34,6 +34,7 @@ const NavBar = ({ adminUi = false }: Props) => {
       ])
     } else {
       setNavItems([
+        { title: 'Home', target: '/' },
         { title: 'Dashboard', target: '/admin' },
         { title: 'Users', target: '/admin/users' },
         { title: 'Tellers', target: '/admin/tellers' },
